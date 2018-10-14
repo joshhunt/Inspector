@@ -41,30 +41,29 @@ inspector.bind = () => {
     $("#inspector").removeClass("active");
   });
 
-  // mouse over events for mouse input
+
+  // item bindings
   $(".inspector").on({
-    mouseenter: (e) => {
-      console.log(e);
+    // mouseenter: (e) => {
+    //   console.log(e);
+    //   inspector.mouseover = true;
+    //   inspector.view($(e.currentTarget).data("hash"));
+    // },
+    // mouseleave: (e) => {
+    //   inspector.mouseover = false;
+    //   $("#inspector").removeClass("active");
+      
+    //   // ...
+    //   if (inspector.request) {
+    //     if (inspector.request.readyState > 0 && inspector.request.readyState < 4) {
+    //       inspector.request.abort();
+    //     }
+    //   }
+    // },
+    click: (e) => {
       inspector.mouseover = true;
       inspector.view($(e.currentTarget).data("hash"));
-    },
-    mouseleave: (e) => {
-      inspector.mouseover = false;
-      $("#inspector").removeClass("active");
-      
-      // ...
-      if (inspector.request) {
-        if (inspector.request.readyState > 0 && inspector.request.readyState < 4) {
-          inspector.request.abort();
-        }
-      }
     }
-  });
-
-  // touch
-  $(".inspector").on("click", (e) => {
-    inspector.mouseover = true;
-    inspector.view($(e.currentTarget).data("hash"));
   });
 
 }
