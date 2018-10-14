@@ -6,7 +6,9 @@ inspector = (apiKey) => {
 
     inspector.init = true;
 
-    $("body").append(`<div id="inspector"></div>`);
+    var inspectorWindow = document.createElement('div');
+    inspectorWindow.setAttribute("id", "inspector");
+    document.body.appendChild(inspectorWindow);
 
   }
 
@@ -16,55 +18,61 @@ inspector = (apiKey) => {
 
 inspector.bind = () => {
 
+  var inspectorWindow = document.querySelector("#inspector");
+  var inspectorItems = document.querySelectorAll(".inspector");
+
   // bind #inspector mouse position
   // to do: intelligently reposition to prevent "off screen" display
-  $(window).on("mousemove.inspector", function(e) {
+  mouseMove = (e) => {
 
     var x = 0;
     var y = 0;
 
-    if (e.type == "mousemove") {
-      x = e.clientX;
-      y = e.clientY;
-    }
+    x = e.clientX;
+    y = e.clientY;
     
-    $("#inspector").css({
-      "top": `${ y + 16 }px`,
-      "left": `${ x + 16 }px`
-    });
+    inspectorWindow.style.cssText = `top: ${ y + 16 }px; left: ${ x + 16 }px`;
     
-  });
+  }
+  window.addEventListener("mousemove", mouseMove);
   
   // if touch primary input, close window on "touch"
-  $("#inspector").on("touch", (e) => {
-    e.preventDefault();
-    $("#inspector").removeClass("active");
+  inspectorWindow.addEventListener("touchstart", (e) => {
+    inspectorWindow.data = { moved: false };
+  });
+  inspectorWindow.addEventListener("touchmove", (e) => {
+    inspectorWindow.data = { moved: true };
+  });
+  inspectorWindow.addEventListener("touchend", (e) => {
+    if (!inspectorWindow.data.moved) {
+      inspectorWindow.classList.remove("active");
+    }
   });
 
 
   // item bindings
-  $(".inspector").on({
-    // mouseenter: (e) => {
-    //   console.log(e);
-    //   inspector.mouseover = true;
-    //   inspector.view($(e.currentTarget).data("hash"));
-    // },
-    // mouseleave: (e) => {
-    //   inspector.mouseover = false;
-    //   $("#inspector").removeClass("active");
-      
-    //   // ...
-    //   if (inspector.request) {
-    //     if (inspector.request.readyState > 0 && inspector.request.readyState < 4) {
-    //       inspector.request.abort();
-    //     }
-    //   }
-    // },
-    click: (e) => {
+  inspectorItems.forEach(item => {
+    item.addEventListener("mouseenter", (e) => {
       inspector.mouseover = true;
-      inspector.view($(e.currentTarget).data("hash"));
-    }
+      inspector.view(e.currentTarget.getAttribute("data-hash"));
+    });
+    item.addEventListener("mouseout", (e) => {
+      inspector.mouseover = false;
+      inspectorWindow.classList.remove("active");
+      
+      // ...
+      if (inspector.request) {
+        if (inspector.request.readyState > 0 && inspector.request.readyState < 4) {
+          inspector.request.abort();
+        }
+      }
+    });
+    item.addEventListener("click", (e) => {
+      inspector.mouseover = true;
+      inspector.view(e.currentTarget.getAttribute("data-hash"));
+    });
   });
+  
 
 }
 
@@ -267,7 +275,8 @@ inspector.view = (hash) => {
       }
     });
     
-    $("#inspector").html(`<div class="window">
+    var inspectorWindow = document.querySelector("#inspector");
+    inspectorWindow.innerHTML = `<div class="window">
       <div class="acrylic"></div>
       <div class="frame">
         <div class="header ${ item.inventory.tierTypeName.toLowerCase() }">
@@ -311,11 +320,11 @@ inspector.view = (hash) => {
           </div>
         </div>
       </div>
-    </div>`);
+    </div>`;
     
     // hacky fix for a sometimes only bug
     if (inspector.mouseover) {
-      $("#inspector").addClass("active");
+      inspectorWindow.classList.add("active");
     }
 
     // load images dynamically
