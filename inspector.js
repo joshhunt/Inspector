@@ -1,32 +1,12 @@
-inspector = () => {
+inspector = (apiKey) => {
+
+  // apiKey for api.braytech.org (to do)
 
   if (!inspector.init) {
 
     inspector.init = true;
 
     $("body").append(`<div id="inspector"></div>`);
-
-    $(window).on("mousemove.inspector", function(e) {
-
-      var x = 0;
-      var y = 0;
-
-      if (e.type == "mousemove") {
-        x = e.clientX;
-        y = e.clientY;
-      }
-      
-      $("#inspector").css({
-        "top": `${ y + 16 }px`,
-        "left": `${ x + 16 }px`
-      });
-      
-    });
-    
-    $("#inspector").on("touch", (e) => {
-      e.preventDefault();
-      $("#inspector").removeClass("active");
-    });
 
   }
 
@@ -36,6 +16,32 @@ inspector = () => {
 
 inspector.bind = () => {
 
+  // bind #inspector mouse position
+  // to do: intelligently reposition to prevent "off screen" display
+  $(window).on("mousemove.inspector", function(e) {
+
+    var x = 0;
+    var y = 0;
+
+    if (e.type == "mousemove") {
+      x = e.clientX;
+      y = e.clientY;
+    }
+    
+    $("#inspector").css({
+      "top": `${ y + 16 }px`,
+      "left": `${ x + 16 }px`
+    });
+    
+  });
+  
+  // if touch primary input, close window on "touch"
+  $("#inspector").on("touch", (e) => {
+    e.preventDefault();
+    $("#inspector").removeClass("active");
+  });
+
+  // mouse over events for mouse input
   $(".inspector").on({
     mouseenter: (e) => {
       console.log(e);
@@ -45,6 +51,8 @@ inspector.bind = () => {
     mouseleave: (e) => {
       inspector.mouseover = false;
       $("#inspector").removeClass("active");
+      
+      // ...
       if (inspector.request) {
         if (inspector.request.readyState > 0 && inspector.request.readyState < 4) {
           inspector.request.abort();
@@ -53,6 +61,7 @@ inspector.bind = () => {
     }
   });
 
+  // touch
   $(".inspector").on("click", (e) => {
     inspector.mouseover = true;
     inspector.view($(e.currentTarget).data("hash"));
@@ -63,11 +72,14 @@ inspector.bind = () => {
 inspector();
 
 inspector.view = (hash) => {
+
+  // ...
   if (inspector.request) {
     if (inspector.request.readyState > 0 && inspector.request.readyState < 4) {
       inspector.request.abort();
     }
   }
+
   inspector.request = $.ajax({
     url: "https://api.braytech.org/?request=manifest&table=DestinyInventoryItemDefinition&hash=" + hash,
     method: "get",
@@ -302,10 +314,13 @@ inspector.view = (hash) => {
       </div>
     </div>`);
     
+    // hacky fix for a sometimes only bug
     if (inspector.mouseover) {
       $("#inspector").addClass("active");
     }
 
+    // load images dynamically
+    // to do: 
     domain.sentinel("#inspector");
 
   });
