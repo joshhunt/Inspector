@@ -1,0 +1,281 @@
+#inspector {
+  position: fixed;
+  width: 24rem;
+  z-index: 2000;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+#inspector.active {
+  opacity: 1;
+}
+
+#inspector .acrylic {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: brightness(1.2) blur(2px);
+}
+
+#inspector .frame {
+  position: relative;
+}
+
+#inspector .header {
+  padding: 0.6rem 1rem;
+  background-color: rgba(var(--basic),0.9);
+  color: #fff;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#inspector .header.exotic {
+  background-color: rgba(var(--exotic),0.9);
+}
+
+#inspector .header > div {
+  flex-basis: 100%;
+  display: flex;
+}
+
+#inspector .header div div {
+  flex: 1 1 auto;
+}
+
+#inspector .header .name {
+  font-size: 1.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+#inspector .header .kind {
+  opacity: 0.8;
+}
+
+#inspector .header .rarity {
+  opacity: 0.4;
+  text-align: right;
+}
+
+#inspector .black {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+#inspector .damage {
+  padding: 1rem;
+  color: #fff;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#inspector .damage .power {
+  font-size: 2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;  
+  padding: 0 1rem 0 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#inspector .damage .power .text {
+  font-size: 2.4rem;
+  padding: 0 0 0 0.4rem;
+  line-height: 0;
+}
+
+#inspector .damage .power.solar {
+  color: #ef641f;
+}
+
+#inspector .damage .power.arc {
+  color: #79bbe7;
+}
+
+#inspector .damage .power.void {
+  color: #a371c2;
+}
+
+#inspector .damage.armor .power {
+  border-right: none;
+}
+
+#inspector .damage.armor .power .text {
+  padding: 0;
+  line-height: 1;
+}
+
+#inspector .damage.armor .power .text:last-child {
+  font-size: 1rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  padding: 0 0 0 1rem;
+  line-height: 0;
+}
+
+#inspector .damage .slot {
+  padding: 0 0 0 1rem;
+  display: flex;
+  align-items: center;
+}
+
+#inspector .damage .slot .icon {
+  font-size: 2rem;
+}
+
+#inspector .damage .slot .text {
+  padding: 0 0 0 0.6rem;
+  text-transform: uppercase;
+}
+
+#inspector .source {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-style: italic;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#inspector .stats {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#inspector .stats .stat {
+  display: flex;
+  align-items: center;
+  line-height: 1.6;
+  margin: 0 0 6px;
+}
+
+#inspector .stats .stat .name {
+  color: rgba(255,255,255, 0.8);
+  padding: 0 1rem 0 0;
+  flex-basis: 45%;
+  height: 18px;  
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#inspector .stats .stat .value {
+  flex-basis: calc(55% - 1rem);
+  height: 18px;
+  position: relative;
+  color: #fff;
+}
+
+#inspector .stats .stat .value.bar {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+#inspector .stats .stat .value.int {
+  display: flex;
+  align-items: center;
+}
+
+#inspector .stats .stat .value .bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #fff;
+}
+
+#inspector .stats .stat .value .bar::before {
+  content: attr(data-value);
+  position: absolute;
+  top: 0;
+  right: -1rem;
+  width: 100%;
+  height: 100%;
+  font-weight: 400;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  opacity: 0.4;
+}
+
+#inspector .sockets.hasTraits {
+  padding: 0 0 1rem;
+}
+
+#inspector .plug {
+  padding: 1rem 1rem 0;
+  display: flex;
+}
+
+#inspector .plug .icon {
+  position: relative;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex-basis: 2.6rem;
+  background-size: contain;
+}
+
+#inspector .plug .text {
+  flex-basis: calc(100% - 3.6rem);
+  padding: 0 0 0 1rem;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#inspector .plug .text .name {
+  text-transform: uppercase;
+  margin: 0 0 0.2rem;
+}
+
+#inspector .plug .text .description {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+#inspector .intrinsic {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+}
+
+#inspector .intrinsic .text .name {
+  color: rgba(var(--exotic),1);
+}
+
+
+
+
+
+
+@media screen and (max-width: 500px) {
+
+#inspector {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100%;
+  height: 100%;
+  box-shadow: none;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+#inspector.active {  
+  pointer-events: initial;
+}
+
+#inspector .window {
+  margin: 2rem;
+  position: relative;
+}
+
+#inspector .frame {
+  position: relative;
+  padding: initial;
+  width: 100%;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+}
+
+}
+
+
